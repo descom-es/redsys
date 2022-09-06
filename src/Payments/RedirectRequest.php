@@ -45,11 +45,19 @@ final class RedirectRequest
     }
 
     /**
+     * Url de laa pasarela de pago doonde redireccionar
+     */
+    public function getUrlRedirect(): string
+    {
+        return $this->environment->getUrlRedirect();
+    }
+
+    /**
      * Obtiene el código HTML para redireccionar a la pasarela de pago
      */
-    public function getHtml(string $title = 'Redirigiendo a la pasarela de pago ...'): string
+    public function redirect(string $title = 'Redirigiendo a la pasarela de pago ...'): string
     {
-        $urlRedirect = $this->environment->getUrlRedirect();
+        $urlRedirect = $this->getUrlRedirect();
         $formData = $this->getFormData();
 
         $formSkeleton = <<<FORM

@@ -31,8 +31,9 @@ $orderId = '123456';
 $amount = 12.05;
 
 
-echo $redsys->generateRedirectPayment($orderId, $amount, 'http://localhost:8000')
-    ->getHtml();
+echo $redsys
+    ->generateRedirectPayment($orderId, $amount, 'http://localhost:8000')
+    ->redirect();
 ```
 
 ### Capture payment notification

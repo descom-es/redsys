@@ -14,7 +14,7 @@ class RedirectTest extends TestCase
             ->generateRedirectPayment('12345', 1.45, 'https://www.descom.es/payment');
 
         $formData = $redirect->getFormData();
-        $form = $redirect->getHtml();
+        $form = $redirect->redirect();
 
         $this->assertEquals('HMAC_SHA256_V1', $formData['Ds_SignatureVersion']);
         $this->assertEquals('tt/+lwWTRo/HkLHGvG209Eu9Q1jz+XjN6JTTft93wyg=', $formData['Ds_Signature']);

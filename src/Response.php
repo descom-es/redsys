@@ -14,8 +14,6 @@ final class Response
 {
     public function __construct(private Merchant $merchant, private Parameters $parameters)
     {
-        if ($merchant->code !== $parameters->dsMerchantCode) {
-        }
     }
 
     public function successful(): bool

@@ -8,6 +8,7 @@ use Descom\Redsys\Merchants\Merchant;
  * @property int|string $order  Número de pedido
  * @property float $amount  Importe
  * @property string $authorizationCode  Código de autorización
+ * @property ?string $errorCode  Código de error
  */
 final class Response
 {
@@ -58,6 +59,11 @@ final class Response
     private function getAttributeAuthorizationCode(): string
     {
         return $this->parameters->dsAuthorisationCode;
+    }
+
+    private function getAttributeErrorCode(): ?string
+    {
+        return $this->parameters->dsErrorCode ?? null;
     }
 
     public function toArray(): array

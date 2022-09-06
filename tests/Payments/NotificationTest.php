@@ -39,7 +39,23 @@ class NotificationTest extends TestCase
         $this->assertEquals('12346', $response->order);
         $this->assertEquals(1.45, $response->amount);
         $this->assertTrue($response->secure());
+    }
 
-        // var_dump($response->toArray());
+    public function testNotificationIsCancelled()
+    {
+        $data = [
+            'Ds_SignatureVersion' => 'HMAC_SHA256_V1',
+            'Ds_MerchantParameters' => 'eyJEc19EYXRlIjoiMDYlMkYwOSUyRjIwMjIiLCJEc19Ib3VyIjoiMTElM0EwOSIsIkRzX1NlY3VyZVBheW1lbnQiOiIwIiwiRHNfQW1vdW50IjoiMTU1IiwiRHNfQ3VycmVuY3kiOiI5NzgiLCJEc19PcmRlciI6IjEyMzQ3IiwiRHNfTWVyY2hhbnRDb2RlIjoiOTk5MDA4ODgxIiwiRHNfVGVybWluYWwiOiIwMDEiLCJEc19SZXNwb25zZSI6Ijk5MTUiLCJEc19NZXJjaGFudERhdGEiOiIiLCJEc19UcmFuc2FjdGlvblR5cGUiOiIwIiwiRHNfQ29uc3VtZXJMYW5ndWFnZSI6IjEiLCJEc19FcnJvckNvZGUiOiJTSVM5OTE1IiwiRHNfQXV0aG9yaXNhdGlvbkNvZGUiOiIrKysrKysiLCJEc19Db250cm9sXzE2NjI0NTUzNTIyMzEiOiIxNjYyNDU1MzUyMjMxIn0=',
+            'Ds_Signature' => 'SnscKzno53LbKYg1x91TRRMDn77u3P7WUrd2WJeSYMY=',
+        ];
+
+        $redsys = Redsys::sandbox($this->merchantSandboxParams());
+
+        $response = $redsys->capturePaymentNotification($data);
+
+        $this->assertFalse($response->successful());
+        $this->assertEquals('12347', $response->order);
+        $this->assertEquals(1.55, $response->amount);
+        $this->assertEquals('SIS9915', $response->errorCode);
     }
 }

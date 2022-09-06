@@ -3,8 +3,6 @@
 namespace Descom\Redsys\Tests\Payments;
 
 use Descom\Redsys\Environments\Sandbox;
-use Descom\Redsys\Merchants\MerchantBuilder;
-use Descom\Redsys\Payments\RedirectRequest;
 use Descom\Redsys\Redsys;
 use Descom\Redsys\Tests\TestCase;
 

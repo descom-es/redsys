@@ -49,9 +49,10 @@ $redsys = Redsys::sandbox([
 $response = $redsys->capturePaymentNotification($_POST);
 
 if (! $response->successful()) {
+    $errorCode = $response->errorCode;
     $responseString = json_encode($response->toArray());
 
-    throw new \Exception("Error processing payment. Response: " . $responseString);
+    throw new \Exception("Error processing payment [$errorCode]. Response: " . $responseString);
 }
 
 $order = $response->order;

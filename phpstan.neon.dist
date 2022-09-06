@@ -1,0 +1,16 @@
+parameters:
+
+    paths:
+        - src
+        - tests
+
+    # The level 9 is the highest level
+    level: 5
+
+    checkMissingIterableValueType: false
+
+    bootstrapFiles:
+        - vendor/autoload.php
+
+    ignoreErrors:
+        - '#Dead catch - Descom\\Redsys\\Exceptions\\ParamsNotFound is never thrown in the try block.#'

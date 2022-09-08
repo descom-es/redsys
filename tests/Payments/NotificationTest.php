@@ -36,9 +36,10 @@ class NotificationTest extends TestCase
         $response = $redsys->capturePaymentNotification($data);
 
         $this->assertTrue($response->successful());
-        $this->assertEquals('12346', $response->order);
+        $this->assertEquals('12346', $response->orderId);
         $this->assertEquals(1.45, $response->amount);
         $this->assertTrue($response->secure());
+        $this->assertEquals('0000', $response->responseCode);
     }
 
     public function testNotificationIsCancelled()
@@ -54,8 +55,9 @@ class NotificationTest extends TestCase
         $response = $redsys->capturePaymentNotification($data);
 
         $this->assertFalse($response->successful());
-        $this->assertEquals('12347', $response->order);
+        $this->assertEquals('12347', $response->orderId);
         $this->assertEquals(1.55, $response->amount);
         $this->assertEquals('SIS9915', $response->errorCode);
+        $this->assertEquals('9915', $response->responseCode);
     }
 }

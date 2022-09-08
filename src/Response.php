@@ -5,10 +5,11 @@ namespace Descom\Redsys;
 use Descom\Redsys\Merchants\Merchant;
 
 /**
- * @property int|string $order  Número de pedido
+ * @property int|string $orderId  Número de pedido
  * @property float $amount  Importe
  * @property string $authorizationCode  Código de autorización
  * @property ?string $errorCode  Código de error
+ * @property ?string $responseCode  Valor que indica el resultado de la operación. Indicará si ha sido autorizada o no. Ver tabla Ds_Response
  */
 final class Response
 {
@@ -42,7 +43,7 @@ final class Response
         return (int)$this->parameters->dsSecurePayment === 1;
     }
 
-    private function getAttributeOrder(): string
+    private function getAttributeOrderId(): string
     {
         return $this->parameters->dsOrder;
     }
@@ -61,7 +62,14 @@ final class Response
 
     private function getAttributeErrorCode(): ?string
     {
-        return $this->parameters->dsErrorCode ?? null;
+        return $this->validResponse()
+            ? null
+            : $this->parameters->dsErrorCode ?? null;
+    }
+
+    private function getAttributeResponseCode(): string
+    {
+        return $this->parameters->dsResponse;
     }
 
     public function toArray(): array

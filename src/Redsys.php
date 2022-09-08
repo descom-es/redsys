@@ -25,9 +25,9 @@ final class Redsys
         return new self(new Production(), self::createMerchantFromArray($params));
     }
 
-    public function generateRedirectPayment(string $order, int|float $amount, string $urlNotification): RedirectRequest
+    public function generateRedirectPayment(int|string $orderId, int|float $amount, string $urlNotification): RedirectRequest
     {
-        return new RedirectRequest($this->environment, $this->merchant, $order, $amount, $urlNotification);
+        return new RedirectRequest($this->environment, $this->merchant, $orderId, $amount, $urlNotification);
     }
 
     public function capturePaymentNotification(array $parameters)

@@ -15,7 +15,7 @@ final class RedirectRequest
     public function __construct(
         private Environment $environment,
         private Merchant $merchant,
-        private string $order,
+        private int|string $orderId,
         private float|int $amount,
         private string $urlNotify
     ) {
@@ -118,7 +118,7 @@ final class RedirectRequest
             'DS_MERCHANT_TRANSACTIONTYPE' => 0,
             'DS_MERCHANT_AMOUNT' => $this->transformAmount($this->amount),
             'DS_MERCHANT_CURRENCY' => $this->currency,
-            'DS_MERCHANT_ORDER' => $this->order,
+            'DS_MERCHANT_ORDER' => $this->orderId,
             'DS_MERCHANT_MERCHANTURL' => $this->urlNotify,
             'DS_MERCHANT_URLOK' => $this->urlSuccessful,
             'DS_MERCHANT_URLKO' => $this->urlDenied,

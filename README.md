@@ -56,7 +56,7 @@ if (! $response->successful()) {
     throw new \Exception("Error processing payment [$errorCode]. Response: " . $responseString);
 }
 
-$order = $response->order;
+$orderId = $response->orderId;
 $authorizationCode = $response->authorizationCode;
 //
 ```

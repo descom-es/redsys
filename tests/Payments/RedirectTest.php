@@ -39,4 +39,19 @@ class RedirectTest extends TestCase
         $this->assertEquals('http://localhost:8000/good', $data['DS_MERCHANT_URLOK']);
         $this->assertEquals('http://localhost:8000/bad', $data['DS_MERCHANT_URLKO']);
     }
+
+    public function testOptionalParameters()
+    {
+        $data = Redsys::sandbox($this->merchantSandboxParams())
+            ->generateRedirectPayment('12345', 1.45, 'https://www.descom.es/payment')
+            ->merchantName('Acme Corp')
+            ->description('Test payment')
+            ->data('internal content')
+            ->getData();
+
+
+        $this->assertEquals('Acme Corp', $data['DS_MERCHANT_MERCHANTNAME']);
+        $this->assertEquals('Test payment', $data['DS_MERCHANT_PRODUCTDESCRIPTION']);
+        $this->assertEquals('internal content', $data['DS_MERCHANT_MERCHANTDATA']);
+    }
 }

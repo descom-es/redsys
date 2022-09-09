@@ -33,6 +33,9 @@ $amount = 12.05;
 
 echo $redsys
     ->generateRedirectPayment($orderId, $amount, 'http://localhost:8000')
+    // ->description('description about the order products') optional DS_MERCHANT_PRODUCTDESCRIPTION
+    // ->merchantName('rename merchant name') optional DS_MERCHANT_MERCHANTNAME
+    // ->data('internal data, to read in response') optional DS_MERCHANT_MERCHANTDATA
     ->redirect();
 ```
 

@@ -11,6 +11,9 @@ final class RedirectRequest
     private int $currency;
     private string $urlSuccessful;
     private string $urlDenied;
+    private ?string $merchantName = null;
+    private ?string $description = null;
+    private ?string $data = null;
 
     public function __construct(
         private Environment $environment,
@@ -22,6 +25,40 @@ final class RedirectRequest
         $this->currency = $this->merchant->currency;
         $this->urlSuccessful = $this->urlNotify;
         $this->urlDenied = $this->urlNotify;
+    }
+
+    /**
+     * Para la entrada de realizar pago esta información se mostrará al titular
+     * en la pantallas con las que este interaciona. En caso de no informarse
+     * aparecerá el nombre configurado en la administración del TPV- Virtual.
+     */
+    public function merchantName(string $name): self
+    {
+        $this->merchantName = $this->strTruncate($name, 25);
+
+        return $this;
+    }
+
+    /**
+     * Para la entrada de realizar pago esta información se mostrará al titular
+     * en la pantallas con las que este interaciona.
+     */
+    public function description(string $description): self
+    {
+        $this->description = $this->strTruncate($description, 125);
+
+        return $this;
+    }
+
+    /**
+     * Cadena de datos que no procesará el TPV-Virtual y se devolverán de la
+     * misma forma en la respuesta
+     */
+    public function data(string $data): self
+    {
+        $this->data = $this->strTruncate($data, 1024);
+
+        return $this;
     }
 
     /**
@@ -110,9 +147,7 @@ final class RedirectRequest
 
     public function getData(): array
     {
-        return array_map(
-            fn ($c) => (string)$c,
-            [
+        $data = [
             'DS_MERCHANT_MERCHANTCODE' => $this->merchant->code,
             'DS_MERCHANT_TERMINAL' => $this->merchant->terminal,
             'DS_MERCHANT_TRANSACTIONTYPE' => 0,
@@ -122,8 +157,13 @@ final class RedirectRequest
             'DS_MERCHANT_MERCHANTURL' => $this->urlNotify,
             'DS_MERCHANT_URLOK' => $this->urlSuccessful,
             'DS_MERCHANT_URLKO' => $this->urlDenied,
-            ]
-        );
+        ];
+
+        $this->addDataIfNotEmpty($data, 'DS_MERCHANT_MERCHANTNAME', $this->merchantName);
+        $this->addDataIfNotEmpty($data, 'DS_MERCHANT_PRODUCTDESCRIPTION', $this->description);
+        $this->addDataIfNotEmpty($data, 'DS_MERCHANT_MERCHANTDATA', $this->data);
+
+        return $this->stringifyArray($data);
     }
 
     private function getDataEncoded(): string
@@ -134,5 +174,22 @@ final class RedirectRequest
     private function transformAmount(float|int $amount): int
     {
         return (int)round($amount * 100);
+    }
+
+    private function strTruncate(string $string, int $length, string $marker = '...'): string
+    {
+        return mb_strimwidth($string, 0, $length, $marker);
+    }
+
+    private function stringifyArray(array $data): Array
+    {
+        return array_map(fn($e) => (string)$e, $data);
+    }
+
+    private function addDataIfNotEmpty(array &$array, string $key, $value)
+    {
+        if ($value) {
+            $array[$key] = $value;
+        }
     }
 }

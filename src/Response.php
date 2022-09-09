@@ -10,6 +10,7 @@ use Descom\Redsys\Merchants\Merchant;
  * @property string $authorizationCode  Código de autorización
  * @property ?string $errorCode  Código de error
  * @property ?string $responseCode  Valor que indica el resultado de la operación. Indicará si ha sido autorizada o no. Ver tabla Ds_Response
+ * @property ?string $data  Información opcional enviada por el comercio en el formulario de pago.
  */
 final class Response
 {
@@ -43,6 +44,11 @@ final class Response
         return (int)$this->parameters->dsSecurePayment === 1;
     }
 
+    public function toArray(): array
+    {
+        return $this->parameters->toArray();
+    }
+
     private function getAttributeOrderId(): string
     {
         return $this->parameters->dsOrder;
@@ -72,9 +78,9 @@ final class Response
         return $this->parameters->dsResponse;
     }
 
-    public function toArray(): array
+    private function getAttributeData(): ?string
     {
-        return $this->parameters->toArray();
+        return $this->parameters->dsMerchantData;
     }
 
     private function authorizedTransition(): bool

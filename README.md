@@ -50,14 +50,18 @@ $redsys = Redsys::sandbox([
 $response = $redsys->capturePaymentNotification($_POST);
 
 if (! $response->successful()) {
+    $orderId = $response->orderId;
     $errorCode = $response->errorCode;
-    $responseString = json_encode($response->toArray());
+    $responseCode = $response->responseCode;
+    // $responseData = $response->toArray();
 
-    throw new \Exception("Error processing payment [$errorCode]. Response: " . $responseString);
+    throw new \Exception("Error processing payment [$orderId]  [$errorCode]", $responseCode);
 }
 
 $orderId = $response->orderId;
 $authorizationCode = $response->authorizationCode;
+$amount = $response->amount;
+
 //
 ```
 

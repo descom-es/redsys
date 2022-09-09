@@ -19,9 +19,9 @@ final class Response
 
     public function successful(): bool
     {
-        return $this->validResponse()
-            && $this->validMerchant()
-            && $this->validTerminal();
+        return $this->authorizedTransition()
+            && $this->validMerchantCode()
+            && $this->validMerchantTerminal();
     }
 
     public function __get($name)
@@ -62,7 +62,7 @@ final class Response
 
     private function getAttributeErrorCode(): ?string
     {
-        return $this->validResponse()
+        return $this->authorizedTransition()
             ? null
             : $this->parameters->dsErrorCode ?? null;
     }
@@ -77,19 +77,19 @@ final class Response
         return $this->parameters->toArray();
     }
 
-    private function validResponse(): bool
+    private function authorizedTransition(): bool
     {
         $dsResponse = (int)$this->parameters->dsResponse;
 
         return $dsResponse <= 99;
     }
 
-    private function validMerchant(): bool
+    private function validMerchantCode(): bool
     {
         return (string)$this->merchant->code === $this->parameters->dsMerchantCode;
     }
 
-    private function validTerminal(): bool
+    private function validMerchantTerminal(): bool
     {
         return (int)$this->merchant->terminal === (int)$this->parameters->dsTerminal;
     }

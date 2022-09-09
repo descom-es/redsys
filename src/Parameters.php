@@ -16,6 +16,7 @@ use Descom\Redsys\Exceptions\ParamsNotFound;
  * @property string $dsAuthorisationCode
  * @property string $dsMerchantCode
  * @property string $dsTerminal
+ * @property ?string $dsMerchantData
  */
 final class Parameters
 {

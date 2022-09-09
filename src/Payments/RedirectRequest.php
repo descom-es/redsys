@@ -181,9 +181,9 @@ final class RedirectRequest
         return mb_strimwidth($string, 0, $length, $marker);
     }
 
-    private function stringifyArray(array $data): Array
+    private function stringifyArray(array $data): array
     {
-        return array_map(fn($e) => (string)$e, $data);
+        return array_map(fn ($e) => (string)$e, $data);
     }
 
     private function addDataIfNotEmpty(array &$array, string $key, $value)

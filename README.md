@@ -36,6 +36,7 @@ echo $redsys
     // ->description('description about the order products') optional DS_MERCHANT_PRODUCTDESCRIPTION
     // ->merchantName('rename merchant name') optional DS_MERCHANT_MERCHANTNAME
     // ->data('internal data, to read in response') optional DS_MERCHANT_MERCHANTDATA
+    // ->merchantPaymethods('z') // optional payment with Bizum
     ->redirect();
 ```
 

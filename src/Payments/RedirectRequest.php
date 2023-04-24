@@ -12,6 +12,7 @@ final class RedirectRequest
     private string $urlSuccessful;
     private string $urlDenied;
     private ?string $merchantName = null;
+    private ?string $merchantPaymethods = null;
     private ?string $description = null;
     private ?string $data = null;
 
@@ -35,6 +36,16 @@ final class RedirectRequest
     public function merchantName(string $name): self
     {
         $this->merchantName = $this->strTruncate($name, 25);
+
+        return $this;
+    }
+
+    /**
+     * Método de pago; z = Bizum; p = paypal, R = Transferencia, N = Masterpass; C = con tarjeta
+     */
+    public function merchantPaymethods(string $method): self
+    {
+        $this->merchantPaymethods = $this->strTruncate($method, 1);
 
         return $this;
     }
@@ -159,9 +170,11 @@ final class RedirectRequest
             'DS_MERCHANT_URLKO' => $this->urlDenied,
         ];
 
+
         $this->addDataIfNotEmpty($data, 'DS_MERCHANT_MERCHANTNAME', $this->merchantName);
         $this->addDataIfNotEmpty($data, 'DS_MERCHANT_PRODUCTDESCRIPTION', $this->description);
         $this->addDataIfNotEmpty($data, 'DS_MERCHANT_MERCHANTDATA', $this->data);
+        $this->addDataIfNotEmpty($data, 'DS_MERCHANT_PAYMETHODS', $this->merchantPaymethods);
 
         return $this->stringifyArray($data);
     }

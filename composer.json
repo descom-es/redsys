@@ -2,8 +2,12 @@
     "name": "descom/redsys",
     "description": "A PHP package to platform Redsys",
     "type": "library",
+    "version": "1.3.0",
     "require": {
-        "php": "^8.0"
+        "php": "^8.0",
+        "php-http/discovery": "^1.17",
+        "psr/http-client-implementation": "*",
+        "psr/http-factory-implementation": "*"
     },
     "homepage": "https://github.com/descom/redsys",
     "license": "MIT",
@@ -17,14 +21,26 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "php-http/discovery": false
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.4",
+        "nyholm/psr7": "^1.8",
+        "phpstan/phpstan": "^1.2",
         "phpunit/phpunit": "^9.3",
-        "phpstan/phpstan": "^1.2"
+        "symfony/http-client": "^7.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Descom\\Redsys\\Laravel\\RedsysServiceProvider"
+            ]
+        }
     },
     "autoload": {
         "psr-4": {
@@ -37,7 +53,7 @@
         }
     },
     "scripts": {
-        "test": "vendor/bin/phpunit --colors=always",
+        "test": "vendor/bin/phpunit --stop-on-error --colors=always",
         "style": "vendor/bin/php-cs-fixer fix",
         "analyse": "vendor/bin/phpstan analyse"
     }

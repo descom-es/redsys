@@ -2,7 +2,7 @@
 
 namespace Descom\Redsys\Tests\Payments;
 
-use Descom\Redsys\Payments\RedirectRequest;
+use Descom\Redsys\Payments\Redirect\RedirectRequest;
 use Descom\Redsys\Redsys;
 use Descom\Redsys\Tests\TestCase;
 

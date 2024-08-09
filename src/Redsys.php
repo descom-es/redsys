@@ -6,8 +6,10 @@ use Descom\Redsys\Environments\Environment;
 use Descom\Redsys\Environments\Production;
 use Descom\Redsys\Environments\Sandbox;
 use Descom\Redsys\Merchants\Merchant;
-use Descom\Redsys\Payments\RedirectNotification;
-use Descom\Redsys\Payments\RedirectRequest;
+use Descom\Redsys\Payments\InSite\InSite;
+use Descom\Redsys\Payments\Redirect\Redirect;
+use Descom\Redsys\Payments\Redirect\RedirectNotification;
+use Descom\Redsys\Payments\Redirect\RedirectRequest;
 
 final class Redsys
 {
@@ -25,11 +27,27 @@ final class Redsys
         return new self(new Production(), self::createMerchantFromArray($params));
     }
 
+    public function redirect(): Redirect
+    {
+        return new Redirect($this->environment, $this->merchant);
+    }
+
+    public function inSite(): InSite
+    {
+        return new InSite($this->environment, $this->merchant);
+    }
+
+    /**
+     * @deprecated version 2.0.0
+     */
     public function generateRedirectPayment(int|string $orderId, int|float $amount, string $urlNotification): RedirectRequest
     {
         return new RedirectRequest($this->environment, $this->merchant, $orderId, $amount, $urlNotification);
     }
 
+    /**
+     * @deprecated version 2.0.0
+     */
     public function capturePaymentNotification(array $parameters)
     {
         $notificationResponse = new RedirectNotification($this->merchant);

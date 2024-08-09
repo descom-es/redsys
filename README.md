@@ -32,6 +32,7 @@ $amount = 12.05;
 
 
 echo $redsys
+    ->redirect()
     ->generateRedirectPayment($orderId, $amount, 'http://localhost:8000')
     // ->description('description about the order products') optional DS_MERCHANT_PRODUCTDESCRIPTION
     // ->merchantName('rename merchant name') optional DS_MERCHANT_MERCHANTNAME
@@ -51,7 +52,7 @@ $redsys = Redsys::sandbox([
     'signatureKey' => 'sq7HjrUOBfKmC576ILgskD5srU870gJ7',
 ]);
 
-$response = $redsys->capturePaymentNotification($_POST);
+$response = $redsys->redirect()->capturePaymentNotification($_POST);
 
 if (! $response->successful()) {
     $orderId = $response->orderId;

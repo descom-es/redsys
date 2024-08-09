@@ -1,9 +1,10 @@
 <?php
 
-namespace Descom\Redsys\Payments;
+namespace Descom\Redsys\Payments\Redirect;
 
 use Descom\Redsys\Environments\Environment;
 use Descom\Redsys\Merchants\Merchant;
+use Descom\Redsys\Payments\Request;
 
 final class RedirectRequest extends Request
 {

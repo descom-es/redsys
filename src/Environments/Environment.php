@@ -8,6 +8,7 @@ abstract class Environment
     private const URL_TESTING = 'https://sis-t.redsys.es:25443/sis';
 
     private const PATH_REDIRECT = 'realizarPago';
+    private const PATH_REST_AUTHORIZE = 'rest/iniciaPeticionREST';
     private const PATH_REST = 'rest/trataPeticionREST';
 
     protected bool $isProduction = false;
@@ -26,6 +27,15 @@ abstract class Environment
             : self::URL_TESTING;
 
         return $url . '/' . self::PATH_REDIRECT;
+    }
+
+    public function getUrlRestAuthorize(): string
+    {
+        $url = $this->isProduction
+            ? self::URL_PRODUCTION
+            : self::URL_TESTING;
+
+        return $url . '/' . self::PATH_REST_AUTHORIZE;
     }
 
     public function getUrlRest(): string

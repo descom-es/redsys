@@ -1,8 +1,9 @@
 <?php
 
-namespace Descom\Redsys\Payments;
+namespace Descom\Redsys\Payments\Redirect;
 
 use Descom\Redsys\Merchants\Merchant;
+use Descom\Redsys\Payments\Response;
 use Descom\Redsys\Response as RedsysResponse;
 
 final class RedirectNotification

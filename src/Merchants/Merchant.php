@@ -37,4 +37,13 @@ final class Merchant
     {
         return $this->$name;
     }
+
+    public function toArray(): array
+    {
+        return [
+            'code' => $this->code,
+            'terminal' => $this->terminal,
+            'signatureKey' => $this->signatureKey,
+        ];
+    }
 }

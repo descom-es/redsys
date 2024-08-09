@@ -6,23 +6,23 @@ use Descom\Redsys\Exceptions\RequestFailed;
 use Descom\Redsys\Exceptions\SignatureInvalid;
 use Descom\Redsys\Merchants\Merchant;
 use Descom\Redsys\Parameters;
-use Descom\Redsys\Response;
+use Descom\Redsys\Response as RedsysResponse;
 use Descom\Redsys\Signature;
 
-trait RedisResponse
+trait Response
 {
-    protected function getValidResponse(Merchant $merchant, array $request): Response
+    protected function getValidResponse(Merchant $merchant, array $request): RedsysResponse
     {
         $this->validateSignature($merchant, $request);
 
         return $this->getResponseWithoutValidate($merchant, $request);
     }
 
-    protected function getResponseWithoutValidate(Merchant $merchant, array $request): Response
+    protected function getResponseWithoutValidate(Merchant $merchant, array $request): RedsysResponse
     {
         $parameters = $this->getParameters($request);
 
-        return new Response($merchant, $parameters);
+        return new RedsysResponse($merchant, $parameters);
     }
 
     private function getParameters(array $request): Parameters

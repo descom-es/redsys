@@ -106,10 +106,12 @@ final class RedirectRequest extends Request
     public function getData(): array
     {
         return array_merge(
-            parent::getData(), [
+            parent::getData(),
+            [
                 'DS_MERCHANT_MERCHANTURL' => $this->urlNotify,
                 'DS_MERCHANT_URLOK' => $this->urlSuccessful,
                 'DS_MERCHANT_URLKO' => $this->urlDenied,
-            ]);
+            ]
+        );
     }
 }

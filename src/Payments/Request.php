@@ -27,7 +27,7 @@ abstract class Request
      * Para la entrada de realizar pago esta información se mostrará al titular
      * en la pantallas con las que este interaciona.
      */
-    public function description(string $description): self
+    public function description(string $description): static
     {
         $this->description = $this->strTruncate($description, 125);
 
@@ -38,7 +38,7 @@ abstract class Request
      * Cadena de datos que no procesará el TPV-Virtual y se devolverán de la
      * misma forma en la respuesta
      */
-    public function data(string $data): self
+    public function data(string $data): static
     {
         $this->data = $this->strTruncate($data, 1024);
 
@@ -50,7 +50,7 @@ abstract class Request
      * en la pantallas con las que este interaciona. En caso de no informarse
      * aparecerá el nombre configurado en la administración del TPV- Virtual.
      */
-    public function merchantName(string $name): self
+    public function merchantName(string $name): static
     {
         $this->merchantName = $this->strTruncate($name, 25);
 
@@ -60,7 +60,7 @@ abstract class Request
     /**
      * Método de pago; z = Bizum; p = paypal, R = Transferencia, N = Masterpass; C = con tarjeta
      */
-    public function merchantPaymethods(string $method): self
+    public function merchantPaymethods(string $method): static
     {
         $this->merchantPayMethods = $this->strTruncate($method, 1);
 

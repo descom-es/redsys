@@ -2,11 +2,10 @@
 
 namespace Descom\Redsys\Payments\InSite;
 
-
 use Descom\Redsys\Environments\Environment;
 use Descom\Redsys\Merchants\Merchant;
-use Descom\Redsys\Payments\Response as PaymentResponse;
 use Descom\Redsys\Payments\Request;
+use Descom\Redsys\Payments\Response as PaymentResponse;
 use Http\Discovery\Psr18Client;
 
 final class Emv3DsAuthCardRequest extends Request
@@ -14,7 +13,7 @@ final class Emv3DsAuthCardRequest extends Request
     use PaymentResponse;
 
     private string $cardToken;
-    private string $urlNotification;
+    // private string $urlNotification;
 
     public function __construct(
         protected Environment $environment,
@@ -28,7 +27,7 @@ final class Emv3DsAuthCardRequest extends Request
     public function configuration(string $cardToken, string $urlNotification): array
     {
         $this->cardToken = $cardToken;
-        $this->urlNotification = $urlNotification;
+        // $this->urlNotification = $urlNotification;
 
         $http = new Psr18Client();
 
@@ -41,7 +40,8 @@ final class Emv3DsAuthCardRequest extends Request
         $jsonResponse = json_decode($response->getBody()->getContents(), true);
 
         $response = $this->getResponseWithoutValidate(
-            $this->merchant, $jsonResponse
+            $this->merchant,
+            $jsonResponse
         )->toArray();
 
         $url = $response['Ds_EMV3DS']['threeDSMethodURL'] ?? null;
@@ -57,8 +57,8 @@ final class Emv3DsAuthCardRequest extends Request
         ];
 
         if ($url) {
-            $data['iframe'] =  [
-                'src' => $this->get3DSecureIframe($em3dSecure, $urlNotification)
+            $data['iframe'] = [
+                'src' => $this->get3DSecureIframe($em3dSecure, $urlNotification),
             ];
         }
 
@@ -73,7 +73,7 @@ final class Emv3DsAuthCardRequest extends Request
                 'DS_MERCHANT_IDOPER' => $this->cardToken,
                 'DS_MERCHANT_EMV3DS' => [
                     'threeDSInfo' => 'CardData',
-                ]
+                ],
             ],
         );
     }

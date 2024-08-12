@@ -4,14 +4,11 @@ namespace Descom\Redsys\Payments\InSite;
 
 use Descom\Redsys\Environments\Environment;
 use Descom\Redsys\Merchants\Merchant;
-use Descom\Redsys\Payments\InSite\Emv3DsAuthCaptureRequest;
-use Descom\Redsys\Payments\InSite\Emv3DsAuthCardRequest;
-use Descom\Redsys\Payments\InSite\Emv3DsAuthProcessRequest;
 use Descom\Redsys\Response;
 
 final class InSite
 {
-    private function __construct(private Environment $environment, private Merchant $merchant)
+    public function __construct(private Environment $environment, private Merchant $merchant)
     {
     }
 

@@ -7,7 +7,7 @@ use Descom\Redsys\Merchants\Merchant;
 
 final class Redirect
 {
-    private function __construct(private Environment $environment, private Merchant $merchant)
+    public function __construct(private Environment $environment, private Merchant $merchant)
     {
     }
 
@@ -22,5 +22,4 @@ final class Redirect
 
         return $notificationResponse->notification($parameters);
     }
-
 }

@@ -2,7 +2,7 @@
 
 namespace Descom\Redsys\Tests\Payments;
 
-use Descom\Redsys\Payments\RedirectRequest;
+use Descom\Redsys\Payments\Redirect\RedirectRequest;
 use Descom\Redsys\Redsys;
 use Descom\Redsys\Tests\TestCase;
 
@@ -11,6 +11,7 @@ class PayMethodsTest extends TestCase
     public function testCardDefault()
     {
         $redirect = Redsys::sandbox($this->merchantSandboxParams())
+            ->redirect()
             ->generateRedirectPayment('12345', 1.45, 'https://www.descom.es/payment');
 
         $parameters = $this->getMerchantParameters($redirect);
@@ -23,6 +24,7 @@ class PayMethodsTest extends TestCase
     public function testBizum()
     {
         $redirect = Redsys::sandbox($this->merchantSandboxParams())
+            ->redirect()
             ->generateRedirectPayment('12345', 1.45, 'https://www.descom.es/payment')
             ->merchantPaymethods('z');
 

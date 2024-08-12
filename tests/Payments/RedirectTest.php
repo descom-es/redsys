@@ -11,6 +11,7 @@ class RedirectTest extends TestCase
     public function testGenerateRedirectRequest()
     {
         $redirect = Redsys::sandbox($this->merchantSandboxParams())
+            ->redirect()
             ->generateRedirectPayment('12345', 1.45, 'https://www.descom.es/payment');
 
         $formData = $redirect->getFormData();
@@ -29,6 +30,7 @@ class RedirectTest extends TestCase
     public function testGenerateRedirectWithCustomUrl()
     {
         $redirect = Redsys::sandbox($this->merchantSandboxParams())
+            ->redirect()
             ->generateRedirectPayment('12345', 1.45, 'https://www.descom.es/payment');
 
         $data = $redirect->urlSuccessful('http://localhost:8000/good')
@@ -43,6 +45,7 @@ class RedirectTest extends TestCase
     public function testOptionalParameters()
     {
         $data = Redsys::sandbox($this->merchantSandboxParams())
+            ->redirect()
             ->generateRedirectPayment('12345', 1.45, 'https://www.descom.es/payment')
             ->merchantName('Acme Corp')
             ->description('Test payment')

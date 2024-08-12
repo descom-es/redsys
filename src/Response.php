@@ -11,6 +11,7 @@ use Descom\Redsys\Merchants\Merchant;
  * @property ?string $errorCode  Código de error
  * @property ?string $responseCode  Valor que indica el resultado de la operación. Indicará si ha sido autorizada o no. Ver tabla Ds_Response
  * @property ?string $data  Información opcional enviada por el comercio en el formulario de pago.
+ * @property ?object $emv3ds Información sobre EMV3DS, ver Tabla DS_EMV3DS
  */
 final class Response
 {

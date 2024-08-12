@@ -8,8 +8,8 @@ use Descom\Redsys\Events\FailedPayment;
 use Descom\Redsys\Events\PaidCompletedSuccessfully;
 use Descom\Redsys\Exceptions\ParamsNotFound;
 use Descom\Redsys\Merchants\Merchant;
-use Descom\Redsys\Payments\Response as PaymentResponse;
 use Descom\Redsys\Payments\Request;
+use Descom\Redsys\Payments\Response as PaymentResponse;
 use Descom\Redsys\Response;
 use Http\Discovery\Psr18Client;
 
@@ -48,7 +48,7 @@ final class Emv3DsAuthProcessRequest extends Request
 
         $jsonResponse = json_decode($response->getBody()->getContents(), true);
 
-        $response =  $this->getResponseWithoutValidate($this->merchant, $jsonResponse);
+        $response = $this->getResponseWithoutValidate($this->merchant, $jsonResponse);
 
 
 
@@ -60,7 +60,7 @@ final class Emv3DsAuthProcessRequest extends Request
         }
 
 
-        $response =  $this->getValidResponse($this->merchant, $jsonResponse);
+        $response = $this->getValidResponse($this->merchant, $jsonResponse);
 
         if ($response->successful()) {
             Events::dispatch(new PaidCompletedSuccessfully($response));
@@ -92,7 +92,7 @@ final class Emv3DsAuthProcessRequest extends Request
                     'threeDSServerTransID' => $this->em3dSecure['transId'],
                     'notificationURL' => $this->urlNotification,
                     'threeDSCompInd' => $this->em3dSecure['url'] ? 'Y' : 'N',
-                ]
+                ],
             ],
         );
     }

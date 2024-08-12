@@ -7,8 +7,8 @@ use Descom\Redsys\Events\Events;
 use Descom\Redsys\Events\FailedPayment;
 use Descom\Redsys\Events\PaidCompletedSuccessfully;
 use Descom\Redsys\Merchants\Merchant;
-use Descom\Redsys\Payments\Response as PaymentResponse;
 use Descom\Redsys\Payments\Request;
+use Descom\Redsys\Payments\Response as PaymentResponse;
 use Descom\Redsys\Response;
 use Http\Discovery\Psr18Client;
 
@@ -64,7 +64,7 @@ final class Emv3DsAuthCaptureRequest extends Request
                     'threeDSInfo' => 'ChallengeResponse',
                     'protocolVersion' => $this->version,
                     'cres' => $this->cres,
-                ]
+                ],
             ],
         );
     }

@@ -8,7 +8,6 @@ use Descom\Redsys\Events\FailedPayment;
 use Descom\Redsys\Merchants\MerchantBuilder;
 use Descom\Redsys\Parameters;
 use Descom\Redsys\Response;
-use Descom\Redsys\Tests\TestCase;
 
 class EventsTest extends TestCase
 {

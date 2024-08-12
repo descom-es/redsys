@@ -3,7 +3,6 @@
 namespace Descom\Redsys\Events;
 
 use Closure;
-use Descom\Redsys\Events\Event;
 use ReflectionClass;
 
 class Events

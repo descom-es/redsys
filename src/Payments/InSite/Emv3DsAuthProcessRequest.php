@@ -12,6 +12,7 @@ use Descom\Redsys\Payments\Request;
 use Descom\Redsys\Payments\Response as PaymentResponse;
 use Descom\Redsys\Response;
 use Http\Discovery\Psr18Client;
+use Psr\Http\Message\MessageInterface;
 
 final class Emv3DsAuthProcessRequest extends Request
 {
@@ -21,6 +22,7 @@ final class Emv3DsAuthProcessRequest extends Request
     private array $screen;
     private array $em3dSecure;
     private string $urlNotification;
+    private ?MessageInterface $request;
 
     public function __construct(
         protected Environment $environment,
@@ -31,12 +33,13 @@ final class Emv3DsAuthProcessRequest extends Request
         $this->currency = $this->merchant->currency;
     }
 
-    public function process(string $cardToken, string $urlNotification, array $screen, array $em3dSecure): Response
+    public function process(string $cardToken, string $urlNotification, array $screen, array $em3dSecure, ?MessageInterface $request = null): Response
     {
         $this->cardToken = $cardToken;
         $this->screen = $screen;
         $this->em3dSecure = $em3dSecure;
         $this->urlNotification = $urlNotification;
+        $this->request = $request;
 
         $http = new Psr18Client();
 
@@ -80,20 +83,31 @@ final class Emv3DsAuthProcessRequest extends Request
                 'DS_MERCHANT_EMV3DS' => [
                     'threeDSInfo' => 'AuthenticationData',
                     'protocolVersion' => $this->em3dSecure['version'],
-                    // 'browserAcceptHeader' => request()->header('Accept'),
-                    // 'browserUserAgent' => request()->header('User-Agent'),
+                    'browserAcceptHeader' => $this->getHeader('Accept') ?? '',
+                    'browserUserAgent' => $this->getHeader('User-Agent') ?? '',
                     'browserJavaEnabled' => 'false',
                     'browserJavascriptEnabled' => 'false',
-                    // 'browserLanguage' => request()->header('Accept-Language'),
+                    'browserLanguage' => $this->getHeader('Accept-Language') ?? '',
                     'browserColorDepth' => (string)$this->screen['colorDepth'],
                     'browserScreenHeight' => (string)$this->screen['height'],
                     'browserScreenWidth' => (string)$this->screen['width'],
-                    // 'browserTZ' => request()->header('Timezone', 52),
+                    'browserTZ' => $this->getHeader('Timezone') ?? 52,
                     'threeDSServerTransID' => $this->em3dSecure['transId'],
                     'notificationURL' => $this->urlNotification,
                     'threeDSCompInd' => $this->em3dSecure['url'] ? 'Y' : 'N',
                 ],
             ],
         );
+    }
+
+    private function getHeader(string $name): ?string
+    {
+        if (is_null($this->request)) {
+            return null;
+        }
+
+        $value = $this->request->getHeaderLine($name);
+
+        return $value ? $value : null;
     }
 }

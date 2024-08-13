@@ -12,7 +12,7 @@ use Descom\Redsys\Payments\Request;
 use Descom\Redsys\Payments\Response as PaymentResponse;
 use Descom\Redsys\Response;
 use Http\Discovery\Psr18Client;
-use Psr\Http\Message\MessageInterface;
+use Illuminate\Http\Request as HttpRequest;
 
 final class Emv3DsAuthProcessRequest extends Request
 {
@@ -22,7 +22,7 @@ final class Emv3DsAuthProcessRequest extends Request
     private array $screen;
     private array $em3dSecure;
     private string $urlNotification;
-    private ?MessageInterface $request;
+    private ?HttpRequest $request;
 
     public function __construct(
         protected Environment $environment,
@@ -33,7 +33,7 @@ final class Emv3DsAuthProcessRequest extends Request
         $this->currency = $this->merchant->currency;
     }
 
-    public function process(string $cardToken, string $urlNotification, array $screen, array $em3dSecure, ?MessageInterface $request = null): Response
+    public function process(string $cardToken, string $urlNotification, array $screen, array $em3dSecure, ?HttpRequest $request = null): Response
     {
         $this->cardToken = $cardToken;
         $this->screen = $screen;
@@ -52,8 +52,6 @@ final class Emv3DsAuthProcessRequest extends Request
         $jsonResponse = json_decode($response->getBody()->getContents(), true);
 
         $response = $this->getResponseWithoutValidate($this->merchant, $jsonResponse);
-
-
 
         try {
             if ($response->emv3ds['threeDSInfo'] === 'ChallengeRequest') {
@@ -83,15 +81,15 @@ final class Emv3DsAuthProcessRequest extends Request
                 'DS_MERCHANT_EMV3DS' => [
                     'threeDSInfo' => 'AuthenticationData',
                     'protocolVersion' => $this->em3dSecure['version'],
-                    'browserAcceptHeader' => $this->getHeader('Accept') ?? '',
-                    'browserUserAgent' => $this->getHeader('User-Agent') ?? '',
+                    'browserAcceptHeader' => $this->getHeader('Accept', ''),
+                    'browserUserAgent' => $this->getHeader('User-Agent', ''),
                     'browserJavaEnabled' => 'false',
                     'browserJavascriptEnabled' => 'false',
-                    'browserLanguage' => $this->getHeader('Accept-Language') ?? '',
+                    'browserLanguage' => $this->getHeader('Accept-Language', ''),
                     'browserColorDepth' => (string)$this->screen['colorDepth'],
                     'browserScreenHeight' => (string)$this->screen['height'],
                     'browserScreenWidth' => (string)$this->screen['width'],
-                    'browserTZ' => $this->getHeader('Timezone') ?? 52,
+                    'browserTZ' => $this->getHeader('Timezone', 52),
                     'threeDSServerTransID' => $this->em3dSecure['transId'],
                     'notificationURL' => $this->urlNotification,
                     'threeDSCompInd' => $this->em3dSecure['url'] ? 'Y' : 'N',
@@ -100,14 +98,12 @@ final class Emv3DsAuthProcessRequest extends Request
         );
     }
 
-    private function getHeader(string $name): ?string
+    private function getHeader(string $name, $default): ?string
     {
         if (is_null($this->request)) {
             return null;
         }
 
-        $value = $this->request->getHeaderLine($name);
-
-        return $value ? $value : null;
+        return $this->request->header($name, $default);
     }
 }

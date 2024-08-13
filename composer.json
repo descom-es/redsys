@@ -2,7 +2,7 @@
     "name": "descom/redsys",
     "description": "A PHP package to platform Redsys",
     "type": "library",
-    "version": "1.6.0",
+    "version": "1.7.0",
     "require": {
         "php": "^8.2",
         "php-http/discovery": "^1.17",
@@ -30,6 +30,7 @@
     "prefer-stable": true,
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.4",
+        "illuminate/http": "^11.20",
         "nyholm/psr7": "^1.8",
         "phpstan/phpstan": "^1.2",
         "phpunit/phpunit": "^9.3",

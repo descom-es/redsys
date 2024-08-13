@@ -18,10 +18,10 @@ final class InSite
             ->configuration($cardToken, $urlNotification);
     }
 
-    public function process(int|string $orderId, int|float $amount, string $cardToken, string $urlNotification, array $screen, array $em3dSecure): Response
+    public function process(int|string $orderId, int|float $amount, string $cardToken, string $urlNotification, array $screen, array $em3dSecure, ?HttpRequest $request = null): Response
     {
         return (new Emv3DsAuthProcessRequest($this->environment, $this->merchant, $orderId, $amount))
-            ->process($cardToken, $urlNotification, $screen, $em3dSecure);
+            ->process($cardToken, $urlNotification, $screen, $em3dSecure, $request);
     }
 
     public function capture(int|string $orderId, int|float $amount, string $cardToken, string $version, string $cres): Response

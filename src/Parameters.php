@@ -18,6 +18,7 @@ use Descom\Redsys\Exceptions\ParamsNotFound;
  * @property string $dsTerminal
  * @property ?string $dsMerchantData
  * @property ?string $dsErrorCode
+ * @property ?array $dsEmv3ds
  */
 final class Parameters
 {
@@ -59,7 +60,7 @@ final class Parameters
     /**
      * @throws \Descom\Redsys\Exceptions\ParamsNotFound
      */
-    private function getParameter(string $key): string
+    private function getParameter(string $key): array|string
     {
         foreach ($this->parameters as $parameterKey => $parameterValue) {
             if ($this->sameParameter($key, $parameterKey)) {

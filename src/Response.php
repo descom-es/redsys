@@ -84,6 +84,11 @@ final class Response
         return $this->parameters->dsMerchantData;
     }
 
+    private function getAttributeEmv3ds(): ?array
+    {
+        return $this->parameters->dsEmv3ds ?? null;
+    }
+
     private function authorizedTransition(): bool
     {
         $dsResponse = (int)$this->parameters->dsResponse;

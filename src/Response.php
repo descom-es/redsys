@@ -2,6 +2,7 @@
 
 namespace Descom\Redsys;
 
+use Descom\Redsys\Exceptions\ParamsNotFound;
 use Descom\Redsys\Merchants\Merchant;
 
 /**
@@ -24,6 +25,13 @@ final class Response
         return $this->authorizedTransition()
             && $this->validMerchantCode()
             && $this->validMerchantTerminal();
+    }
+
+    public function required3DsChallenger(): bool
+    {
+        $threeDSInfo = $this->emv3ds['threeDSInfo'] ?? null;
+
+        return $threeDSInfo === 'ChallengeRequest';
     }
 
     public function __get($name)
@@ -91,9 +99,14 @@ final class Response
 
     private function authorizedTransition(): bool
     {
-        $dsResponse = (int)$this->parameters->dsResponse;
+        try {
+            $dsResponse = (int)$this->parameters->dsResponse;
 
-        return $dsResponse <= 99;
+            return $dsResponse <= 99;
+        } catch (ParamsNotFound $exception) {
+        }
+
+        return false;
     }
 
     private function validMerchantCode(): bool

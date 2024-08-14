@@ -43,7 +43,7 @@ final class Emv3DsAuthCaptureRequest extends Request
 
         $response = $http->sendRequest($request);
 
-        $response = $this->getValidResponse($this->merchant, json_decode($response->getBody()->getContents(), true));
+        $response = $this->getResponseWithoutValidate($this->merchant, json_decode($response->getBody()->getContents(), true));
 
         if ($response->successful()) {
             Events::dispatch(new PaidCompletedSuccessfully($response));

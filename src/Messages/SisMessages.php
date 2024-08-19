@@ -5004,6 +5004,8 @@ class SisMessages
     {
         $self = new self();
 
-        return$self->messages[$sysCode] ?? null;
+        $message = $self->messages[$sysCode] ?? [];
+
+        return $message['message'] ?? null;
     }
 }

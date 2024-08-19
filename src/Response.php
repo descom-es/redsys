@@ -104,9 +104,8 @@ final class Response
 
             return $dsResponse <= 99;
         } catch (ParamsNotFound $exception) {
+            return false;
         }
-
-        return false;
     }
 
     private function validMerchantCode(): bool

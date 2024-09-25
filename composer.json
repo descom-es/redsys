@@ -2,7 +2,7 @@
     "name": "descom/redsys",
     "description": "A PHP package to platform Redsys",
     "type": "library",
-    "version": "1.8.2",
+    "version": "1.8.3",
     "require": {
         "php": "^8.2",
         "php-http/discovery": "^1.17",

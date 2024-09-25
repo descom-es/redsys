@@ -70,9 +70,13 @@ final class Response
         return $amountInCts / 100;
     }
 
-    private function getAttributeAuthorizationCode(): string
+    private function getAttributeAuthorizationCode(): ?string
     {
-        return $this->parameters->dsAuthorisationCode;
+        try {
+            return $this->parameters->dsAuthorisationCode ?? null;
+        } catch (ParamsNotFound $exception) {
+            return null;
+        }
     }
 
     private function getAttributeErrorCode(): ?string
@@ -94,7 +98,11 @@ final class Response
 
     private function getAttributeEmv3ds(): ?array
     {
-        return $this->parameters->dsEmv3ds ?? null;
+        try {
+            return $this->parameters->dsEmv3ds ?? null;
+        } catch (ParamsNotFound $exception) {
+            return null;
+        }
     }
 
     private function authorizedTransition(): bool

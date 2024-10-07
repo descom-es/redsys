@@ -53,13 +53,9 @@ final class Emv3DsAuthProcessRequest extends Request
 
         $response = $this->getResponseWithoutValidate($this->merchant, $jsonResponse);
 
-        try {
-            if ($response->emv3ds['threeDSInfo'] === 'ChallengeRequest') {
-                return $response;
-            }
-        } catch (ParamsNotFound $exception) {
+        if ($this->challengerRequired($response)) {
+            return $response;
         }
-
 
         $response = $this->getValidResponse($this->merchant, $jsonResponse);
 
@@ -105,5 +101,17 @@ final class Emv3DsAuthProcessRequest extends Request
         }
 
         return $this->request->header($name, $default);
+    }
+
+    private function challengerRequired(Response $response): bool
+    {
+        try {
+            $threeDSInfo = $response->emv3ds['threeDSInfo'] ?? null;
+
+            return  $threeDSInfo === 'ChallengeRequest';
+        } catch (ParamsNotFound $exception) {
+        }
+
+        return false;
     }
 }

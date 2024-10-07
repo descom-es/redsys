@@ -6,7 +6,6 @@ use Descom\Redsys\Environments\Environment;
 use Descom\Redsys\Events\Events;
 use Descom\Redsys\Events\FailedPayment;
 use Descom\Redsys\Events\PaidCompletedSuccessfully;
-use Descom\Redsys\Exceptions\ParamsNotFound;
 use Descom\Redsys\Merchants\Merchant;
 use Descom\Redsys\Payments\Request;
 use Descom\Redsys\Payments\Response as PaymentResponse;
@@ -105,13 +104,8 @@ final class Emv3DsAuthProcessRequest extends Request
 
     private function challengerRequired(Response $response): bool
     {
-        try {
-            $threeDSInfo = $response->emv3ds['threeDSInfo'] ?? null;
+        $threeDSInfo = $response->emv3ds['threeDSInfo'] ?? null;
 
-            return  $threeDSInfo === 'ChallengeRequest';
-        } catch (ParamsNotFound $exception) {
-        }
-
-        return false;
+        return $threeDSInfo === 'ChallengeRequest';
     }
 }

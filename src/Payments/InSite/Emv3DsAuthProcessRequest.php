@@ -6,7 +6,6 @@ use Descom\Redsys\Environments\Environment;
 use Descom\Redsys\Events\Events;
 use Descom\Redsys\Events\FailedPayment;
 use Descom\Redsys\Events\PaidCompletedSuccessfully;
-use Descom\Redsys\Exceptions\ParamsNotFound;
 use Descom\Redsys\Merchants\Merchant;
 use Descom\Redsys\Payments\Request;
 use Descom\Redsys\Payments\Response as PaymentResponse;
@@ -53,13 +52,9 @@ final class Emv3DsAuthProcessRequest extends Request
 
         $response = $this->getResponseWithoutValidate($this->merchant, $jsonResponse);
 
-        try {
-            if ($response->emv3ds['threeDSInfo'] === 'ChallengeRequest') {
-                return $response;
-            }
-        } catch (ParamsNotFound $exception) {
+        if ($this->challengerRequired($response)) {
+            return $response;
         }
-
 
         $response = $this->getValidResponse($this->merchant, $jsonResponse);
 
@@ -105,5 +100,12 @@ final class Emv3DsAuthProcessRequest extends Request
         }
 
         return $this->request->header($name, $default);
+    }
+
+    private function challengerRequired(Response $response): bool
+    {
+        $threeDSInfo = $response->emv3ds['threeDSInfo'] ?? null;
+
+        return $threeDSInfo === 'ChallengeRequest';
     }
 }

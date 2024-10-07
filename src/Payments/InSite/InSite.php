@@ -2,6 +2,7 @@
 
 namespace Descom\Redsys\Payments\InSite;
 
+use Closure;
 use Descom\Redsys\Environments\Environment;
 use Descom\Redsys\Merchants\Merchant;
 use Descom\Redsys\Response;
@@ -19,10 +20,10 @@ final class InSite
             ->configuration($cardToken, $urlNotification);
     }
 
-    public function process(int|string $orderId, int|float $amount, string $cardToken, string $urlNotification, array $screen, array $em3dSecure, ?Request $request = null): Response
+    public function process(int|string $orderId, int|float $amount, string $cardToken, string $urlNotification, array $screen, array $em3dSecure, ?Request $request = null, ?Closure $event = null): Response
     {
         return (new Emv3DsAuthProcessRequest($this->environment, $this->merchant, $orderId, $amount))
-            ->process($cardToken, $urlNotification, $screen, $em3dSecure, $request);
+            ->process($cardToken, $urlNotification, $screen, $em3dSecure, $request, $event);
     }
 
     public function capture(int|string $orderId, int|float $amount, string $cardToken, string $version, string $cres): Response

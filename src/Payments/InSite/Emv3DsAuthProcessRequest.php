@@ -2,6 +2,7 @@
 
 namespace Descom\Redsys\Payments\InSite;
 
+use Closure;
 use Descom\Redsys\Environments\Environment;
 use Descom\Redsys\Events\Events;
 use Descom\Redsys\Events\FailedPayment;
@@ -32,7 +33,7 @@ final class Emv3DsAuthProcessRequest extends Request
         $this->currency = $this->merchant->currency;
     }
 
-    public function process(string $cardToken, string $urlNotification, array $screen, array $em3dSecure, ?HttpRequest $request = null): Response
+    public function process(string $cardToken, string $urlNotification, array $screen, array $em3dSecure, ?HttpRequest $request = null, ?Closure $event = null): Response
     {
         $this->cardToken = $cardToken;
         $this->screen = $screen;
@@ -50,9 +51,17 @@ final class Emv3DsAuthProcessRequest extends Request
 
         $jsonResponse = json_decode($response->getBody()->getContents(), true);
 
+        if ($event) {
+            $event('process response', $jsonResponse);
+        }
+
         $response = $this->getResponseWithoutValidate($this->merchant, $jsonResponse);
 
         if ($this->challengerRequired($response)) {
+            if ($event) {
+                $event('challenger required', $jsonResponse);
+            }
+
             return $response;
         }
 

@@ -33,7 +33,13 @@ trait Response
 
         $parameters = new Parameters($request);
 
-        return new Parameters(json_decode(base64_decode($parameters->dsMerchantParameters), true));
+        $merchantParameters = json_decode(base64_decode($parameters->dsMerchantParameters), true);
+
+        if (! is_array($merchantParameters)) {
+            throw new RequestFailed('Not valid merchant parameters');
+        }
+
+        return new Parameters($merchantParameters);
     }
 
     private function validateSignature(Merchant $merchant, array $data): void

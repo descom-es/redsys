@@ -2,10 +2,10 @@
     "name": "descom/redsys",
     "description": "A PHP package to platform Redsys",
     "type": "library",
-    "version": "1.8.8",
+    "version": "1.9.0",
     "require": {
-        "php": "^8.2",
-        "php-http/discovery": "^1.17",
+        "php": "^8.3",
+        "php-http/discovery": "^1.20",
         "psr/http-client-implementation": "*",
         "psr/http-factory-implementation": "*"
     },
@@ -29,11 +29,11 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require-dev": {
-        "friendsofphp/php-cs-fixer": "^3.4",
-        "illuminate/http": "^11.20",
+        "friendsofphp/php-cs-fixer": "^3.75",
+        "illuminate/http": "^12.0",
         "nyholm/psr7": "^1.8",
-        "phpstan/phpstan": "^1.2",
-        "phpunit/phpunit": "^9.3",
+        "phpstan/phpstan": "^2.1",
+        "phpunit/phpunit": "^10.5|^11.5",
         "symfony/http-client": "^7.0"
     },
     "autoload": {

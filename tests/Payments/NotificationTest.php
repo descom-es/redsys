@@ -60,4 +60,21 @@ class NotificationTest extends TestCase
         $this->assertEquals('SIS9915', $response->errorCode);
         $this->assertEquals('9915', $response->responseCode);
     }
+
+    public function testNotificationWithNonAsciiCharactersHasValidSignature()
+    {
+        $data = [
+            'Ds_SignatureVersion' => 'HMAC_SHA256_V1',
+            'Ds_MerchantParameters' => 'eyJEc19EYXRlIjoiMDYlMkYxMSUyRjIwMjYiLCJEc19Ib3VyIjoiMTMlM0EyMCIsIkRzX1NlY3VyZVBheW1lbnQiOiIxIiwiRHNfQW1vdW50IjoiMjk1MzIiLCJEc19DdXJyZW5jeSI6Ijk3OCIsIkRzX09yZGVyIjoiMDAwOFY0IiwiRHNfTWVyY2hhbnRDb2RlIjoiOTk5MDA4ODgxIiwiRHNfVGVybWluYWwiOiIwMDEiLCJEc19SZXNwb25zZSI6Ijk2NzMiLCJEc19NZXJjaGFudERhdGEiOiIiLCJEc19UcmFuc2FjdGlvblR5cGUiOiIwIiwiRHNfQ29uc3VtZXJMYW5ndWFnZSI6IjEiLCJEc19CaXp1bV9JZE9wZXIiOiIyMTI2NDAyNjcwMjQ1OTQzMDQ2MTU4ODkzMTgyOTUyNzgxMSIsIkRzX1Byb2Nlc3NlZFBheU1ldGhvZCI6IjY4IiwiRHNfQ29udHJvbF8xNzkzOTY3NjA0NTEyIjoiMTc5Mzk2NzYwNDUxMiIsIkRzX1Jlc3BvbnNlX0Rlc2NyaXB0aW9uIjoiT3BlcmFjacOzbiBjYW5jZWxhZGEuIEVsIHVzdWFyaW8gbm8gZGVzZWEgc2VndWlyLiJ9',
+            'Ds_Signature' => 'STG6w6KMmwa5v92_RL_3QqHIvyjiEETd56lK59Gk6bA=',
+        ];
+
+        $redsys = Redsys::sandbox($this->merchantSandboxParams());
+
+        $response = $redsys->capturePaymentNotification($data);
+
+        $this->assertFalse($response->successful());
+        $this->assertEquals('0008V4', $response->orderId);
+        $this->assertEquals('9673', $response->responseCode);
+    }
 }

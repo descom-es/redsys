@@ -6,7 +6,7 @@ use Descom\Redsys\Exceptions\ParamsNotFound;
 
 final class Signature
 {
-    public static function generateSignature(string $key, array $parameters): string
+    public static function generateSignature(string $key, array $parameters, ?string $parametersEncoded = null): string
     {
         $self = new self();
 
@@ -14,7 +14,7 @@ final class Signature
 
         $key = base64_decode($key);
         $order = $parameters->order;
-        $parametersEncoded = base64_encode($parameters);
+        $parametersEncoded ??= base64_encode($parameters);
 
         $key = $self->encrypt3DES($order, $key);
         $result = $self->hmac256($parametersEncoded, $key);

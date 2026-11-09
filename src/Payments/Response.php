@@ -49,7 +49,11 @@ trait Response
         $signature = $parametersSigned->dsSignature;
         $parameters = json_decode(base64_decode($parametersSigned->dsMerchantParameters), true);
 
-        $signatureCalculated = Signature::generateSignature($merchant->signatureKey, $parameters);
+        $signatureCalculated = Signature::generateSignature(
+            $merchant->signatureKey,
+            $parameters,
+            $parametersSigned->dsMerchantParameters
+        );
 
         if ($signature !== $signatureCalculated) {
             throw new SignatureInvalid();
